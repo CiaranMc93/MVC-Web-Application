@@ -1,8 +1,3 @@
-<html>
-<body>
-<h1>Students age and standard deviation of age</h1>
-<h2><a href="index.php/statistics/students">Get all students</a></h2>
-
 <?php
 require_once "../Slim/Slim.php";
 Slim\Slim::registerAutoloader ();
@@ -12,28 +7,30 @@ $app = new \Slim\Slim (); // slim run-time object
 require_once "conf/config.inc.php";
 
 //get all students 
-$app->map ( "/statistics/students", function ($string = null) use($app) 
+$app->map ("/statistics/students", function ($string = null) use($app) 
 {
+	$parameters ["SearchingString"] = $string;
 	$action = ACTION_GET_STATS;
-	return new loadRunMVCComponents ( "StudentModel", "StudentController", "jsonView", $action, $app, $string);
+	return new loadRunMVCComponents ( "StudentModel", "StudentController", "jsonView", $action, $app, $parameters);
 } )->via ( "GET" );
 
+
 //get all students by nationality
-$app->map ( "/statistics/students:nationality", function ($nationality = null) use($app)
+$app->map ("/statistics/students:nationality", function ($nationality = null) use($app)
 {
 	$parameters["nationality"] = $nationality;
 	$action = ACTION_GET_STATS;
 	return new loadRunMVCComponents ( "StudentModel", "StudentController", "jsonView", $action, $app, $parameters );
 } )->via ("GET");
 
-
+/*
 //search users by string
 $app->map ( "/users/search/:string", function ($string = null) use($app) {
 	$parameters ["SearchingString"] = $string;
 	$action = ACTION_GET_STATS;
 	return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
 } )->via ( "GET" );
-
+*/
 $app->run ();
 
 class loadRunMVCComponents 
@@ -53,6 +50,4 @@ class loadRunMVCComponents
 	}
 }
 ?>
-</body>
-</html>
 

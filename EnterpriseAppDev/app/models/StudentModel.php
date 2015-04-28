@@ -19,9 +19,9 @@ class StudentModel
 	}
 	
 	//get all students
-	public function getStudents($nationality) 
+	public function getStudents() 
 	{
-		return ($this->studentsDAO->get($nationality));
+		return ($this->studentsDAO->get());
 	}
 
 	public function __destruct()

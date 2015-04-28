@@ -9,10 +9,10 @@ class StudentDAO
 	}
 	
 	//create a select statement
-	public function get($nationality) 
+	public function get($nationality = null) 
 	{
 		//select statement
-		$sql = "SELECT * ";
+		$sql = "SELECT age ";
 		$sql .= "FROM students ";
 		
 		if ($nationality != null)

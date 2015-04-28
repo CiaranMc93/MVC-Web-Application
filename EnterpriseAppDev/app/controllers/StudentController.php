@@ -11,6 +11,7 @@ class StudentController
 		$this->slimApp = $slimApp;
 		$this->requestBody = json_decode($this->slimApp->request->getBody(), true ); // this must contain the representation of the new user
 		
+		
 		if (! empty($parameteres["nation"]))
 		{
 			$nationality = $parameteres["nation"];
@@ -21,7 +22,7 @@ class StudentController
 		{
 			case ACTION_GET_STATS :
 				//get students stats
-				$this->getStudents($nationality);
+				$this->getStudents();
 				break;
 			case ACTION_GET_STUDENTS:
 				//get students by nationality
@@ -37,14 +38,50 @@ class StudentController
 		}
 	}
 	
-	private function getStudents($nationality) 
+	private function getStudents() 
 	{
-		$answer = $this->model->getStudents($nationality);
+		//count of all students
+		$ageCount = 0;
+		$overallAge;
+		$average;
 		
-		if ($answer != null) 
+		$studentAges = $this->model->getStudents();
+		
+		foreach($studentAges as $ages)
+		{
+			$ageCount++;
+			
+			$totalAge = intval($ages['age']);
+			//get total age
+			$overallAge = $overallAge + $totalAge;
+			
+		}
+		
+		//get average
+		$average = $overallAge / count($studentAges);
+		$ages = 0;
+		
+		foreach($studentAges as $ages)
+		{		
+			$ages++;
+			$totalAge = intval($ages['age']);
+			$delt = $totalAge - $average;
+			
+			$average = $average + $delt/$ages;
+			//standard deviation
+			$totalSquared = $totalSquared + $delt*($totalAge - $average);	
+		}
+		
+		$variance = $totalSquared / ($ages - 1);
+		$sd = sqrt($fVariance);
+		
+		//create array to be printed
+		$avg = array('Average' => $average, "Standard Dev" => $sd);
+		
+		if ($avg != null) 
 		{
 			$this->slimApp->response ()->setStatus (HTTPSTATUS_OK);
-			$this->model->apiResponse = $answer;
+			$this->model->apiResponse = $avg;
 		} 
 		else 
 		{
