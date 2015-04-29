@@ -59,29 +59,37 @@ class StudentController
 		
 		//get average
 		$average = $overallAge / count($studentAges);
-		$ages = 0;
 		
-		foreach($studentAges as $ages)
-		{		
-			$ages++;
-			$totalAge = intval($ages['age']);
-			$delt = $totalAge - $average;
-			
-			$average = $average + $delt/$ages;
-			//standard deviation
-			$totalSquared = $totalSquared + $delt*($totalAge - $average);	
+		$numStudents = 0;
+		$mean = 0;
+		$M2 = 0;
+		
+		//loop through each student
+		foreach($studentAges as $x)
+		{
+			//count students
+			$numStudents++;
+			//get current students age
+			$currAge = intval($x["age"]);
+			$delta = $currAge - $mean;
+			//calculate the mean
+			$mean = $mean + $delta/$numStudents;
+			//calculate m2
+			$M2 = $M2 + $delta*($currAge - $mean);
 		}
 		
-		$variance = $totalSquared / ($ages - 1);
-		$sd = sqrt($fVariance);
+		//get the variance
+		$variance = $M2/($numStudents - 1);
+		//get standard deviation
+		$standDev = sqrt($variance);
 		
 		//create array to be printed
-		$avg = array('Average' => $average, "Standard Dev" => $sd);
+		$avgSDOutput = array('Average' => $average, "Standard Dev" => $standDev);
 		
-		if ($avg != null) 
+		if ($avgSDOutput != null) 
 		{
 			$this->slimApp->response ()->setStatus (HTTPSTATUS_OK);
-			$this->model->apiResponse = $avg;
+			$this->model->apiResponse = $avgSDOutput;
 		} 
 		else 
 		{

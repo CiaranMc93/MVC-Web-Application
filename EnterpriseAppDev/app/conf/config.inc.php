@@ -19,6 +19,9 @@ define("ACTION_SEARCH_USERS", 88);
 define("ACTION_GET_STATS", 99);
 define("ACTION_GET_STUDENTS", 110);
 
+//define username and password for authentication
+define("USERNAME",Ciaran);
+define("PASSWORD",C11354741);
 
 /* HTTP status codes 2xx*/
 define("HTTPSTATUS_OK", 200);
@@ -60,11 +63,5 @@ define("GENERAL_FORBIDDEN", "Request is ok but action is forbidden");
 define("GENERAL_INVALIDBODY", "Request is ok but transmitted body is invalid");
 
 define("GENERAL_WELCOME_MESSAGE", "Welcome to MSc dissertation API");
-
-/* representation of a new user in the DB */
-define("TABLE_USER_NAME_LENGTH", 25);
-define("TABLE_USER_SURNAME_LENGTH", 25);
-define("TABLE_USER_EMAIL_LENGTH", 50);
-define("TABLE_USER_PASSWORD_LENGTH", 40);
 
 ?>

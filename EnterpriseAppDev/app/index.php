@@ -6,8 +6,35 @@ $app = new \Slim\Slim (); // slim run-time object
 
 require_once "conf/config.inc.php";
 
+function authenticate()
+{
+	foreach (getallheaders() as $name => $value) 
+	{
+    	echo "$name: $value\n";
+	}
+	
+	/*
+	if ($avgSDOutput != null)
+	{
+		$this->slimApp->response ()->setStatus (HTTPSTATUS_OK);
+		$this->model->apiResponse = $avgSDOutput;
+	}
+	else
+	{
+		$this->slimApp->response()->setStatus(HTTPSTATUS_UNAUTHORIZED);
+			
+		$Message = array
+		(
+				GENERAL_MESSAGE_LABEL => GENERAL_NOCONTENT_MESSAGE
+		);
+			
+		$this->model->apiResponse = $Message;
+	}
+	*/
+}
+
 //get all students 
-$app->map ("/statistics/students", function ($string = null) use($app) 
+$app->map ("/statistics/students", "authenticate", function ($string = null) use($app) 
 {
 	$parameters ["SearchingString"] = $string;
 	$action = ACTION_GET_STATS;
