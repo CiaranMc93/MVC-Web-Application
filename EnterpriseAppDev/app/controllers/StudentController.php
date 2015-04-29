@@ -99,7 +99,7 @@ class StudentController
 			(
 					GENERAL_MESSAGE_LABEL => GENERAL_NOCONTENT_MESSAGE 
 			);
-			
+			//send message
 			$this->model->apiResponse = $Message;
 		}
 	}

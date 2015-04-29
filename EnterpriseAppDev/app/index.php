@@ -12,7 +12,6 @@ function authenticate()
 	{
     	echo "$name: $value\n";
 	}
-	
 	/*
 	if ($avgSDOutput != null)
 	{

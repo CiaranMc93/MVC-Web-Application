@@ -20,7 +20,7 @@ define("ACTION_GET_STATS", 99);
 define("ACTION_GET_STUDENTS", 110);
 
 //define username and password for authentication
-define("USERNAME",Ciaran);
+define("USERNAME",CiaranMc93);
 define("PASSWORD",C11354741);
 
 /* HTTP status codes 2xx*/
