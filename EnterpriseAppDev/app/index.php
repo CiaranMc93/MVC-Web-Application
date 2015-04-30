@@ -7,56 +7,52 @@ $app = new \Slim\Slim (); // slim run-time object
 require_once "conf/config.inc.php";
 
 function authenticate()
-{
-	foreach (getallheaders() as $name => $value) 
+{	
+	$response;
+	
+	//put all headers into manageable array
+	$headers = getAllHeaders();
+	
+	//take out the username and password passed in
+	$password = $headers['Password'];
+	$username = $headers['Username'];
+	
+	//get username and password
+	$confPass = PASSWORD;
+	$confUser = USERNAME;
+	
+	//compare strings to the copnstants
+	if(strcmp($password, $confPass) == 0 && strcmp($username, $confUser) == 0)
 	{
-    	echo "$name: $value\n";
+		//access is ok
+		//$this->slimApp->response()->setStatus(HTTPSTATUS_OK);
+		print_r('Success');
 	}
-	/*
-	if ($avgSDOutput != null)
+	else 
 	{
-		$this->slimApp->response ()->setStatus (HTTPSTATUS_OK);
-		$this->model->apiResponse = $avgSDOutput;
+		//unathorized response
+		//$this->slimApp->response()->setStatus(HTTPSTATUS_UNAUTHORIZED);
+		print_r('Failure');
 	}
-	else
-	{
-		$this->slimApp->response()->setStatus(HTTPSTATUS_UNAUTHORIZED);
-			
-		$Message = array
-		(
-				GENERAL_MESSAGE_LABEL => GENERAL_NOCONTENT_MESSAGE
-		);
-			
-		$this->model->apiResponse = $Message;
-	}
-	*/
 }
 
 //get all students 
-$app->map ("/statistics/students", "authenticate", function ($string = null) use($app) 
+$app->map ("/statistics/students", function () use($app) 
 {
-	$parameters ["SearchingString"] = $string;
 	$action = ACTION_GET_STATS;
-	return new loadRunMVCComponents ( "StudentModel", "StudentController", "jsonView", $action, $app, $parameters);
+	return new loadRunMVCComponents ( "StudentModel", "StudentController", "jsonView", $action, $app, $string);
 } )->via ( "GET" );
 
 
 //get all students by nationality
-$app->map ("/statistics/students:nationality", function ($nationality = null) use($app)
+$app->map ("/statistics/students/:nationality", function ($nationality = null) use($app)
 {
 	$parameters["nationality"] = $nationality;
-	$action = ACTION_GET_STATS;
-	return new loadRunMVCComponents ( "StudentModel", "StudentController", "jsonView", $action, $app, $parameters );
+	$action = ACTION_GET_STUDENTS;
+	return new loadRunMVCComponents ("StudentModel", "StudentController", "jsonView", $action, $app, $parameters);
 } )->via ("GET");
 
-/*
-//search users by string
-$app->map ( "/users/search/:string", function ($string = null) use($app) {
-	$parameters ["SearchingString"] = $string;
-	$action = ACTION_GET_STATS;
-	return new loadRunMVCComponents ( "UserModel", "UserController", "jsonView", $action, $app, $parameters );
-} )->via ( "GET" );
-*/
+
 $app->run ();
 
 class loadRunMVCComponents 
@@ -72,7 +68,7 @@ class loadRunMVCComponents
 		$this->model = new $modelName (); // common model
 		$this->controller = new $controllerName ( $this->model, $action, $app, $parameters );
 		$this->view = new $viewName ( $this->controller, $this->model, $app ); // common view
-		$this->view->output (); // this returns the response to the requesting client
+		$this->view->output(); // this returns the response to the requesting client
 	}
 }
 ?>

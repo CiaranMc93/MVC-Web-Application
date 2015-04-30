@@ -11,8 +11,8 @@ class StudentController
 		$this->slimApp = $slimApp;
 		$this->requestBody = json_decode($this->slimApp->request->getBody(), true ); // this must contain the representation of the new user
 		
-		
-		if (! empty($parameteres["nation"]))
+		var_dump($parameteres);
+		if (!empty($parameteres["nation"]))
 		{
 			$nationality = $parameteres["nation"];
 		}
@@ -29,10 +29,10 @@ class StudentController
 				$this->getStudent($nationality);
 				break;
 			case null :
-				$this->slimApp->response ()->setStatus ( HTTPSTATUS_BADREQUEST );
-				$Message = array (
-						GENERAL_MESSAGE_LABEL => GENERAL_CLIENT_ERROR 
-				);
+				$this->slimApp->response()->setStatus(HTTPSTATUS_BADREQUEST);
+				
+				$Message = array (GENERAL_MESSAGE_LABEL => GENERAL_CLIENT_ERROR );
+				
 				$this->model->apiResponse = $Message;
 				break;
 		}
@@ -93,7 +93,7 @@ class StudentController
 		} 
 		else 
 		{
-			$this->slimApp->response ()->setStatus ( HTTPSTATUS_NOCONTENT );
+			$this->slimApp->response ()->setStatus(HTTPSTATUS_NOCONTENT);
 			
 			$Message = array 
 			(

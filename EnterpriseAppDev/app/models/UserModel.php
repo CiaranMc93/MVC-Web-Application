@@ -16,8 +16,9 @@ class UserModel
 		$this->validationSuite = new Validation ();
 	}
 	public function getUsers() {
-		return ($this->UsersDAO->get ());
+		return ($this->UsersDAO->get());
 	}
+	
 	public function getUser($userID) {
 		if (is_numeric ( $userID ))
 			return ($this->UsersDAO->get ( $userID ));
