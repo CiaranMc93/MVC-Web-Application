@@ -12,7 +12,7 @@ class StudentDAO
 	public function get($nationality = null) 
 	{
 		//if there is a nationality passed in
-		if(nationality == null)
+		if($nationality == null)
 		{
 			//select statement
 			$sql = "SELECT age ";

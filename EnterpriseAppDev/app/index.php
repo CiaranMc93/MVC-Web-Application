@@ -10,12 +10,11 @@ function authenticate()
 {	
 	$response;
 	
-	//put all headers into manageable array
-	$headers = getAllHeaders();
+	$app->request->headers;
 	
 	//take out the username and password passed in
-	$password = $headers['Password'];
-	$username = $headers['Username'];
+	$password = $app['Password'];
+	$username = $app['Username'];
 	
 	//get username and password
 	$confPass = PASSWORD;
@@ -53,6 +52,12 @@ $app->map ("/statistics/students(/:nationality)", function ($nationality = null)
 	return new loadRunMVCComponents ("StudentModel", "StudentController", "jsonView", $action, $app, $parameters);
 } )->via ("GET");
 
+//get all students
+$app->map ("/statistics/tasks", function() use($app)
+{
+	$action = ACTION_GET_TASKS;
+	return new loadRunMVCComponents ( "TaskModel", "TaskController", "jsonView", $action, $app, $string);
+} )->via ( "GET" );
 
 $app->run ();
 

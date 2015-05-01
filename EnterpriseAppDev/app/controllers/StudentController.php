@@ -8,6 +8,7 @@ class StudentController
 	private $model;
 	private $requestBody;
 	private $nationality;
+	private $studentNat;
 	//private $functionality;
 	
 	public function __construct($model, $action = null, $slimApp, $parameteres = null) 
@@ -55,7 +56,8 @@ class StudentController
 		$ageCount = 0;
 		$overallAge;
 		$average;
-			
+		
+		//calculate the average
 		foreach($studentAges as $ages)
 		{
 			$ageCount++;
@@ -72,7 +74,7 @@ class StudentController
 		$mean = 0;
 		$M2 = 0;
 		
-		//loop through each student
+		//loop through each student to calculate standard dev
 		foreach($studentAges as $x)
 		{
 			//count students
@@ -111,84 +113,91 @@ class StudentController
 			$this->model->apiResponse = $Message;
 		}
 	}
-	
+		
+		// get the students by nationality
 	private function getStudent($nationality) 
 	{
-		$studentNat = $this->model->getStudent($nationality);
+		// student nationality array
+		$studentNat = $this->model->getStudent ( $nationality );
 		
-		if($studentNat == null)
+		if ($studentNat != null) 
 		{
-			$this->slimApp->response ()->setStatus (HTTPSTATUS_NOCONTENT);
+			if (count ( $studentNat ) == 1) 
+			{
+				//there is only 1 value available for this route so there is no average or standard deviation?
+				var_dump ( $studentNat );
+			} 
+			else 
+			{
+				// count of all students
+				$natCount = 0;
+				$overallNat;
+				$average;
 				
-			$Message = array
-			(
-					GENERAL_MESSAGE_LABEL => GENERAL_NOCONTENT_MESSAGE
-			);
+				foreach ( $studentNat as $nationalities ) 
+				{
+					$natCount ++;
+					
+					$totalNat = intval ( $nationalities ['age'] );
+					// get total age
+					$overallNat = $overallNat + $totalNat;
+				}
+				
+				// get average
+				$average = $overallNat / count ( $studentNat );
+				
+				$numNats = 0;
+				$mean = 0;
+				$M2 = 0;
+				
+				// loop through each student
+				foreach ( $studentNat as $x ) 
+				{
+					// count students
+					$numNats ++;
+					// get current students age
+					$currNat = intval ( $x ["age"] );
+					$delta = $currNat - $mean;
+					// calculate the mean
+					$mean = $mean + $delta / $numNats;
+					// calculate m2
+					$M2 = $M2 + $delta * ($currNat - $mean);
+				}
+				
+				// get the variance
+				$variance = $M2 / ($numNats - 1);
+				// get standard deviation
+				$standDev = sqrt ( $variance );
+				
+				// create array to be printed
+				$natSDOutput = array (
+						'Nation' => $nationality,
+						'Average' => $average,
+						"Standard Dev" => $standDev 
+				);
+				
+				if ($natSDOutput != null) {
+					$this->slimApp->response ()->setStatus ( HTTPSTATUS_OK );
+					$this->model->apiResponse = $natSDOutput;
+				} else {
+					
+					$this->slimApp->response ()->setStatus ( HTTPSTATUS_NOCONTENT );
+					
+					$Message = array (
+							GENERAL_MESSAGE_LABEL => GENERAL_NOCONTENT_MESSAGE 
+					);
+					$this->model->apiResponse = $Message;
+				}
+			}
+		} 
+		else 
+		{
+			$this->slimApp->response ()->setStatus ( HTTPSTATUS_NOCONTENT );
+			
+			$Message = array (GENERAL_MESSAGE_LABEL => GENERAL_NOCONTENT_MESSAGE );
+			
 			$this->model->apiResponse = $Message;
 		}
-		else
-		{
-			//count of all students
-			$natCount = 0;
-			$overallNat;
-			$average;
-				
-			foreach($studentNat as $nationalities)
-			{
-				$natCount++;
-			
-				$totalNat = intval($nationalities['age']);
-				//get total age
-				$overallNat = $overallNat + $totalNat;
-			}
-			
-			//get average
-			$average = $overallNat / count($studentNat);
-			
-			$numNats = 0;
-			$mean = 0;
-			$M2 = 0;
-			
-			//loop through each student
-			foreach($studentNat as $x)
-			{
-				//count students
-				$numNats++;
-				//get current students age
-				$currNat = intval($x["age"]);
-				$delta = $currNat - $mean;
-				//calculate the mean
-				$mean = $mean + $delta/$numNats;
-				//calculate m2
-				$M2 = $M2 + $delta*($currNat - $mean);
-			}
-			
-			//get the variance
-			$variance = $M2/($numNats - 1);
-			//get standard deviation
-			$standDev = sqrt($variance);
-			
-			//create array to be printed
-			$natSDOutput = array('Nation'=> $nationality, 'Average' => $average, "Standard Dev" => $standDev);
-			
-			if ($natSDOutput != null)
-			{
-				$this->slimApp->response ()->setStatus (HTTPSTATUS_OK);
-				$this->model->apiResponse = $natSDOutput;
-			}
-			else
-			{
-					
-				$this->slimApp->response ()->setStatus (HTTPSTATUS_NOCONTENT);
-					
-				$Message = array
-				(
-						GENERAL_MESSAGE_LABEL => GENERAL_NOCONTENT_MESSAGE
-				);
-				$this->model->apiResponse = $Message;
-			}
-		}
-		
 	}
 }
 ?>
