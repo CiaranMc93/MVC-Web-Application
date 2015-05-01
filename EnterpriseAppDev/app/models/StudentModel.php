@@ -24,7 +24,7 @@ class StudentModel
 		return ($this->studentsDAO->get());
 	}
 	
-	//get all students
+	//get all students by nationality
 	public function getStudent($nationality)
 	{
 		return ($this->studentsDAO->get($nationality));

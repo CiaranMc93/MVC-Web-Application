@@ -17,7 +17,7 @@ define("ACTION_UPDATE_USER", 66);
 define("ACTION_DELETE_USER", 77);
 define("ACTION_SEARCH_USERS", 88);
 define("ACTION_GET_STATS", 99);
-define("ACTION_GET_STUDENTS", 111);
+define("ACTION_GET_NAT", 101);
 
 //define username and password for authentication
 define("USERNAME",CiaranMc93);

@@ -20,9 +20,10 @@ class StudentDAO
 		}
 		else 
 		{
-			//select statement
-			$sql = "SELECT * ";
-			$sql .= "FROM students ";
+			$sql = "SELECT age, id_nationality, description ";
+			$sql .= "FROM enterpriseAppDev.students ";
+			$sql .= "JOIN enterpriseAppDev.nationalities ON students.id_nationality = nationalities.id ";
+			$sql .= "WHERE description = ?";
 		}
 		
 		//prepare the query

@@ -45,10 +45,11 @@ $app->map ("/statistics/students", function () use($app)
 
 
 //get all students by nationality
-$app->map ("/statistics/students/:nationality", function ($nationality = null) use($app)
+$app->map ("/statistics/students(/:nationality)", function ($nationality = null) use($app)
 {
+	$httpMethod = $app->request->getMethod();
+	$action = ACTION_GET_NAT;
 	$parameters["nationality"] = $nationality;
-	$action = ACTION_GET_STUDENTS;
 	return new loadRunMVCComponents ("StudentModel", "StudentController", "jsonView", $action, $app, $parameters);
 } )->via ("GET");
 

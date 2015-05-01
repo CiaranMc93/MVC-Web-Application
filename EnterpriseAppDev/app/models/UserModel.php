@@ -20,8 +20,8 @@ class UserModel
 	}
 	
 	public function getUser($userID) {
-		if (is_numeric ( $userID ))
-			return ($this->UsersDAO->get ( $userID ));
+		if (is_numerics($userID))
+			return ($this->UsersDAO->get($userID));
 		
 		return false;
 	}
