@@ -19,6 +19,8 @@ define("ACTION_SEARCH_USERS", 88);
 define("ACTION_GET_STATS", 99);
 define("ACTION_GET_NAT", 101);
 define("ACTION_GET_TASK",111);
+define("ACTION_GET_QUESTIONNAIRES",122);
+define("ACTION_GET_QUESTIONNAIRES_BY_TASK",133);
 
 //define username and password for authentication
 define("USERNAME",CiaranMc93);

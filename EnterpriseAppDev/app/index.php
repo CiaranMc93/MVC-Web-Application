@@ -6,6 +6,7 @@ $app = new \Slim\Slim (); // slim run-time object
 
 require_once "conf/config.inc.php";
 
+//authentication function
 function authenticate()
 {	
 	$response;
@@ -57,6 +58,23 @@ $app->map ("/statistics/tasks", function() use($app)
 {
 	$action = ACTION_GET_TASKS;
 	return new loadRunMVCComponents ( "TaskModel", "TaskController", "jsonView", $action, $app, $string);
+} )->via ( "GET" );
+
+//get all questionnaires
+$app->map ("/statistics/questionnaires", function() use($app)
+{
+	$action = ACTION_GET_QUESTIONNAIRES;
+	return new loadRunMVCComponents ( "QuestionnaireModel", "QuestionnaireController", "jsonView", $action, $app, $string);
+} )->via ( "GET" );
+
+
+//get questionnaires by task
+$app->map ("/statistics/questionnaires(/:task)", function($task = null) use($app)
+{
+	$httpMethod = $app->request->getMethod();
+	$action = ACTION_GET_QUESTIONNAIRES_BY_TASK;
+	$parameters["task"] = $task;
+	return new loadRunMVCComponents ( "QuestionnaireModel", "QuestionnaireController", "jsonView", $action, $app, $parameters);
 } )->via ( "GET" );
 
 $app->run ();
