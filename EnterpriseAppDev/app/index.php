@@ -1,40 +1,48 @@
 <?php
-require_once "../Slim/Slim.php";
-Slim\Slim::registerAutoloader ();
-
-$app = new \Slim\Slim (); // slim run-time object
 
 require_once "conf/config.inc.php";
 
+require "../Slim/Middleware.php";
+require "../Slim/Middleware/BasicAuth.php";
+require_once "../Slim/Slim.php";
+
+Slim\Slim::registerAutoloader ();
+
+$app = new \Slim\Slim(); // slim run-time object
+
+$app->add(new \BasicAuth(USERNAME,PASSWORD));
+
+/*
 //authentication function
 function authenticate()
 {	
-	$response;
-	
-	$app->request->headers;
+	$array = getallheaders();
 	
 	//take out the username and password passed in
-	$password = $app['Password'];
-	$username = $app['Username'];
+	$password = $array['Password'];
+	$username = $array['Username'];
 	
 	//get username and password
 	$confPass = PASSWORD;
 	$confUser = USERNAME;
 	
+	$auth = $confUser . ":" . $confPass;
+	
+	$auth1 = base64_encode($auth);
+	
+	print_r($auth1);
+	
 	//compare strings to the copnstants
 	if(strcmp($password, $confPass) == 0 && strcmp($username, $confUser) == 0)
 	{
-		//access is ok
 		//$this->slimApp->response()->setStatus(HTTPSTATUS_OK);
-		print_r('Success');
 	}
-	else 
+	else
 	{
-		//unathorized response
 		//$this->slimApp->response()->setStatus(HTTPSTATUS_UNAUTHORIZED);
-		print_r('Failure');
 	}
 }
+*/
 
 //get all students 
 $app->map ("/statistics/students", function () use($app) 
@@ -61,7 +69,7 @@ $app->map ("/statistics/tasks", function() use($app)
 } )->via ( "GET" );
 
 //get all questionnaires
-$app->map ("/statistics/questionnaires", function() use($app)
+$app->map ("/statistics/questionnaires", function($string = null) use($app)
 {
 	$action = ACTION_GET_QUESTIONNAIRES;
 	return new loadRunMVCComponents ( "QuestionnaireModel", "QuestionnaireController", "jsonView", $action, $app, $string);

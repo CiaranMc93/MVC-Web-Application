@@ -62,11 +62,6 @@ class pdoDbManager
 		return ($result);
 	}
 	
-	function getLastInsertedID() 
-	{
-		return ($this->db_link->lastInsertId ());
-	}
-	
 	function getNumberOfAffectedRows($stmt) 
 	{
 		return ($stmt->rowCount ());

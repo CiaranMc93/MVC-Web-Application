@@ -23,8 +23,8 @@ define("ACTION_GET_QUESTIONNAIRES",122);
 define("ACTION_GET_QUESTIONNAIRES_BY_TASK",133);
 
 //define username and password for authentication
-define("USERNAME",CiaranMc93);
-define("PASSWORD",C11354741);
+define("USERNAME","CiaranMc93");
+define("PASSWORD","C11354741");
 
 /* HTTP status codes 2xx*/
 define("HTTPSTATUS_OK", 200);

@@ -3,9 +3,16 @@
 class Functionality
 {
 	
+	private $slimApp;
+	
 	function Functionality()
 	{
-
+	
+	}
+	
+	function Functionality($auth)
+	{
+		
 	}
 	
 	public function getAverage($array)

@@ -17,11 +17,6 @@ class QuestionnaireController
 		$this->slimApp = $slimApp;
 		$this->requestBody = json_decode($this->slimApp->request->getBody(), true ); // this must contain the representation of the new user
 		
-		if (!empty($parameteres["task"]))
-		{
-			$task = $parameteres["task"];
-		}
-		
 		//switch according to action
 		switch ($action) 
 		{
@@ -29,10 +24,12 @@ class QuestionnaireController
 				//get students stats
 				$this->getQuestionnaires();
 				break;
+				/*
 			case ACTION_GET_QUESTIONNAIRES_BY_TASK:
 				//get students by nationality
-				$this->getQuestionnaire($task);
+				$this->getQuestionnaire($tasks);
 				break;
+				*/
 			case null :
 				$this->slimApp->response()->setStatus(HTTPSTATUS_BADREQUEST);
 				
@@ -158,10 +155,11 @@ class QuestionnaireController
 		}
 	}
 		
+	
 	// get the students by nationality
 	private function getQuestionnaire($task) 
 	{
-	//get the array back from the model
+		//get the array back from the model
 		$questionnaireArray = $this->model->getQuestionnaire($task);
 		
 		var_dump($questionnaireArray);
@@ -275,5 +273,6 @@ class QuestionnaireController
 			$this->model->apiResponse = $Message;
 		}
 	}
+	
 }
 ?>
