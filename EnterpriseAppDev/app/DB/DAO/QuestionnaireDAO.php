@@ -1,4 +1,6 @@
 <?php
+
+//sql part
 class QuestionnaireDAO 
 {
 	private $dbManager;

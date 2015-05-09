@@ -3,6 +3,7 @@ require_once "DB/pdoDbManager.php";
 require_once "DB/DAO/StudentDAO.php";
 require_once "Validation.php";
 
+//student functionality
 class StudentModel 
 {
 	private $studentsDAO; // list of DAOs used by this model

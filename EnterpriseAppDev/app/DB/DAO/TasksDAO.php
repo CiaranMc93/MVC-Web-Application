@@ -1,4 +1,5 @@
 <?php
+//sql part
 class TasksDAO
 {
 	private $dbManager;

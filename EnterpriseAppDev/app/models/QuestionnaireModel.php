@@ -18,7 +18,7 @@ class QuestionnaireModel
 		$this->validationSuite = new Validation();
 	}
 	
-	//get all students
+	//get all questionnaires
 	public function getQuestionnaires() 
 	{
 		return ($this->questionnairesDAO->get());

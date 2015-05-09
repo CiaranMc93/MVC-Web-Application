@@ -3,6 +3,7 @@ require_once "DB/pdoDbManager.php";
 require_once "DB/DAO/TasksDAO.php";
 require_once "Validation.php";
 
+//task functionality
 class TaskModel
 {
 	private $tasksDAO; // list of DAOs used by this model
